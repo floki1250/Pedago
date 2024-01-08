@@ -1,4 +1,5 @@
 name: deno-deploy
+
 on:
   push:
     branches:
@@ -6,19 +7,32 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - run: corepack enable
-      - uses: actions/setup-node@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Enable Corepack
+        run: npx corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: pnpm
-      - run: pnpm install
-      - run: pnpm build
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Project
+        run: pnpm build
         env:
           NITRO_PRESET: deno_deploy
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
