@@ -1,43 +1,39 @@
-name: deno-deploy
-
+name: Deploy
 on:
   push:
-    branches:
-      - main
+    branches: main
   pull_request:
-    branches:
-      - main
+    branches: main
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+
     permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read  # This is required for actions/checkout
+      id-token: write # Needed for auth with Deno Deploy
+      contents: read # Needed to clone the repository
+
     steps:
-      - name: Checkout Repository
+      - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: Enable Corepack
-        run: npx corepack enable
+      - name: Install Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
 
-      - name: Setup Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'pnpm'
+          node-version: lts/*
 
-      - name: Install Dependencies
-        run: pnpm install
+      - name: Build step
+        run: "npm install && NITRO_PRESET=deno-deploy npm run build" # 📝 Update the build command(s) if necessary
 
-      - name: Build Project
-        run: pnpm build
-        env:
-          NITRO_PRESET: deno_deploy
-
-      - name: Deploy to Deno Deploy
+      - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: pedago
-          entrypoint: server/index.ts
-          root: .output
+          project: "good-fly-22"
+          entrypoint: "server/index.ts" # 📝 Update the entrypoint if necessary
+          root: ".output" # 📝 Update the root if necessary
