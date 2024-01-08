@@ -10,11 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxtjs/color-mode": "^3.3.2",
     "nuxt": "^3.9.1",
+    "sass": "^1.69.7",
     "vue": "^3.4.5",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@iconify-json/fa6-brands": "^1.1.18",
     "@nuxt/ui": "^2.11.1"
   }
 }

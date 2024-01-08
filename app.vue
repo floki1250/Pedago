@@ -4,3 +4,8 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
+<script>
+definePageMeta({
+  colorMode: 'light',
+})
+</script>
